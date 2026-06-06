@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anay Shekhar - ML Systems Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+            cursor: none;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* ── LOADER ── */
+        #loader-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: #0a0a0c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        #loader-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        #canvas-container { width: 100%; height: 100%; }
+
+        /* ── MAIN CANVAS ── */
+        .container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+
+        /* ── PORTFOLIO OVERLAY ── */
+        #portfolio-content {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 1s ease;
+            pointer-events: none;
+        }
+        #portfolio-content.visible { pointer-events: auto; }
+
+        /* ── CORNER UI ── */
+        .logo {
+            position: fixed;
+            top: 40px; left: 40px;
+            z-index: 100;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #ffffff;
+        }
+
+        .menu-icon {
+            position: fixed;
+            top: 36px; right: 40px;
+            z-index: 200;
+            font-size: 1.6em;
+            cursor: pointer;
+            color: #ffffff;
+            transition: color 0.3s ease, transform 0.3s ease;
+            user-select: none;
+            line-height: 1;
+            width: 32px;
+            text-align: center;
+        }
+        .menu-icon:hover { color: #d4af37; }
+        .menu-icon.open { transform: rotate(90deg); color: #d4af37; }
+
+        .status-left {
+            position: fixed;
+            bottom: 40px; left: 40px;
+            z-index: 100;
+            font-size: 0.75em;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #888888;
+            max-width: 200px;
+            line-height: 1.5;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .status-right {
+            position: fixed;
+            bottom: 40px; right: 40px;
+            z-index: 100;
+            font-size: 1.5em;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .status-right:hover { color: #d4af37; }
+
+        /* ── NAV DRAWER ── */
+        #nav-drawer {
+            position: fixed;
+            top: 0; right: 0;
+            width: 320px;
+            height: 100vh;
+            background: rgba(10, 10, 12, 0.97);
+            border-left: 1px solid #1f2937;
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 50px;
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+            backdrop-filter: blur(20px);
+        }
+        #nav-drawer.open { transform: translateX(0); }
+
+        .nav-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65em;
+            letter-spacing: 0.2em;
+            color: #444;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .nav-items { list-style: none; }
+        .nav-items li {
+            margin-bottom: 8px;
+        }
+        .nav-items li a {
+            display: block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: color 0.25s ease, letter-spacing 0.25s ease;
+            cursor: pointer;
+        }
+        .nav-items li a:hover {
+            color: #d4af37;
+            letter-spacing: 0.06em;
+        }
+        .nav-items li a.active { color: #60a5fa; }
+
+        .nav-divider {
+            width: 40px;
+            height: 1px;
+            background: #1f2937;
+            margin: 36px 0;
+        }
+
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 10px; }
+        .nav-links li a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8em;
+            color: #888;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+        .nav-links li a:hover { color: #fff; }
+
+        /* ── OVERLAY BACKDROP ── */
+        #drawer-backdrop {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 140;
+            display: none;
+        }
+        #drawer-backdrop.open { display: block; }
+
+        /* ── ASSET PANEL ── */
+        #asset-panel {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.92);
+            width: min(700px, 90vw);
+            max-height: 80vh;
+            background: rgba(8, 8, 10, 0.96);
+            border: 1px solid #1f2937;
+            z-index: 130;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow-y: auto;
+            backdrop-filter: blur(24px);
+        }
+        #asset-panel.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 28px 36px 24px;
+            border-bottom: 1px solid #1f2937;
+            position: sticky;
+            top: 0;
+            background: rgba(8, 8, 10, 0.98);
+            z-index: 1;
+        }
+        .panel-header h2 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75em;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #888;
+        }
+        .panel-close {
+            font-size: 1.2em;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+        .panel-close:hover { color: #fff; }
+
+        .panel-body { padding: 36px; }
+
+        /* POKEPY panel */
+        .panel-pokepy .project-title {
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .panel-pokepy .project-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75em;
+            color: #60a5fa;
+            letter-spacing: 0.1em;
+            margin-bottom: 28px;
+        }
+        .panel-pokepy .project-desc {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88em;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7em;
+            letter-spacing: 0.08em;
+            padding: 4px 10px;
+            border: 1px solid #1f2937;
+            color: #888;
+        }
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .stat-box {
+            padding: 20px;
+            border: 1px solid #1f2937;
+            text-align: center;
+        }
+        .stat-box .stat-val {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+        .stat-box .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65em;
+            color: #555;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* RESEARCH panel */
+        .panel-research .research-list { list-style: none; }
+        .panel-research .research-item {
+            padding: 24px 0;
+            border-bottom: 1px solid #111;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+        .research-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7em;
+            color: #333;
+            padding-top: 4px;
+            min-width: 28px;
+        }
+        .research-content h4 {
+            font-size: 1em;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .research-content p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8em;
+            color: #666;
+            line-height: 1.6;
+        }
+        .research-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65em;
+            padding: 3px 8px;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        .status-active { border: 1px solid #22c55e; color: #22c55e; }
+        .status-planned { border: 1px solid #f59e0b; color: #f59e0b; }
+        .status-completed { border: 1px solid #60a5fa; color: #60a5fa; }
+
+        /* SYSTEMS panel */
+        .panel-systems .sys-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .sys-card {
+            padding: 24px;
+            border: 1px solid #1f2937;
+        }
+        .sys-card h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75em;
+            color: #60a5fa;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .sys-card ul { list-style: none; }
+        .sys-card ul li {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8em;
+            color: #aaa;
+            padding: 4px 0;
+            border-bottom: 1px solid #0f0f0f;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sys-card ul li::before {
+            content: '▸';
+            color: #333;
+            font-size: 0.7em;
+        }
+        .progress-bar {
+            height: 2px;
+            background: #111;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #60a5fa;
+            transition: width 0.8s ease;
+        }
+
+        /* ENGINEERING panel */
+        .panel-engineering .eng-timeline { list-style: none; }
+        .eng-item {
+            display: flex;
+            gap: 24px;
+            padding: 20px 0;
+            border-bottom: 1px solid #0f0f0f;
+            position: relative;
+        }
+        .eng-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #60a5fa;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .eng-dot.gold { background: #d4af37; }
+        .eng-dot.green { background: #22c55e; }
+        .eng-content h4 {
+            font-size: 0.95em;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .eng-content span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72em;
+            color: #555;
+        }
+        .eng-content p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78em;
+            color: #777;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        /* ── CURSOR ── */
+        .cursor-dot {
+            position: fixed;
+            width: 8px; height: 8px;
+            background: #d4af37;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .cursor-dot.active { opacity: 1; }
+        .glow-ring {
+            position: fixed;
+            width: 40px; height: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .glow-ring.active { opacity: 1; }
+
+        /* scrollbar */
+        #asset-panel::-webkit-scrollbar { width: 4px; }
+        #asset-panel::-webkit-scrollbar-track { background: transparent; }
+        #asset-panel::-webkit-scrollbar-thumb { background: #1f2937; }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="loader-overlay">
+        <div id="canvas-container"></div>
+    </div>
+
+    <!-- Main Canvas -->
+    <div class="container">
+        <canvas id="mainCanvas"></canvas>
+    </div>
+
+    <!-- Corner UI -->
+    <div class="logo">ANAY</div>
+
+    <div class="menu-icon" id="menuIcon">⋮</div>
+
+    <div class="status-left">ML Systems Engineer • High School</div>
+    <div class="status-right" id="statusRight">POKEPY</div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="glow-ring"></div>
+
+    <!-- Nav Drawer Backdrop -->
+    <div id="drawer-backdrop"></div>
+
+    <!-- Nav Drawer -->
+    <nav id="nav-drawer">
+        <p class="nav-label">Navigation</p>
+        <ul class="nav-items">
+            <li><a href="#" data-asset="POKEPY" class="active">Pokepy</a></li>
+            <li><a href="#" data-asset="RESEARCH">Research</a></li>
+            <li><a href="#" data-asset="SYSTEMS">Systems</a></li>
+            <li><a href="#" data-asset="ENGINEERING">Engineering</a></li>
+        </ul>
+        <div class="nav-divider"></div>
+        <ul class="nav-links">
+            <li><a href="https://github.com" target="_blank">GitHub ↗</a></li>
+            <li><a href="https://linkedin.com" target="_blank">LinkedIn ↗</a></li>
+            <li><a href="mailto:anay@example.com">Contact ↗</a></li>
+        </ul>
+    </nav>
+
+    <!-- Asset Panel -->
+    <div id="asset-panel">
+        <div class="panel-header">
+            <h2 id="panel-label">// POKEPY</h2>
+            <button class="panel-close" id="panelClose">✕</button>
+        </div>
+        <div class="panel-body" id="panel-body">
+            <!-- content injected by JS -->
+        </div>
+    </div>
+
+    <!-- Portfolio Content -->
+    <div id="portfolio-content"></div>
+
+    <script src="main.js"></script>
+</body>
+</html>
