@@ -9,6 +9,71 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <style>
+        :root{
+            --bg: #000000;
+            --text: #ffffff;
+            --muted: #888888;
+            --panel-bg: rgba(8,8,10,0.96);
+            --panel-border: #1f2937;
+            --accent: #60a5fa;
+            --accent-2: #d4af37;
+            --cursor: #d4af37;
+            --glow: rgba(212,175,55,0.3);
+            --loader-bg: #000000;
+            --quick-bg: rgba(255,255,255,0.95);
+            --quick-fg: #01204E;
+        }
+
+        /* Light theme overrides */
+        .theme-light{
+            --bg: #f7f7f8;
+            --text: #0b1220;
+            --muted: #6b7280;
+            --panel-bg: rgba(255,255,255,0.9);
+            --panel-border: #e6e6e6;
+            --accent: #005f73;
+            --accent-2: #e9c46a;
+            --cursor: #005f73;
+            --glow: rgba(0,95,115,0.12);
+            --loader-bg: #f7f7f8;
+            --quick-bg: rgba(255,255,255,0.95);
+            --quick-fg: #01204E;
+        }
+
+        /* Dark theme overrides (existing feel) */
+        .theme-dark{
+            --bg: #000000;
+            --text: #ffffff;
+            --muted: #888888;
+            --panel-bg: rgba(8,8,10,0.96);
+            --panel-border: #1f2937;
+            --accent: #60a5fa;
+            --accent-2: #d4af37;
+            --cursor: #d4af37;
+            --glow: rgba(212,175,55,0.3);
+            --loader-bg: #000000;
+            --quick-bg: rgba(255,255,255,0.06);
+            --quick-fg: #ffffff;
+        }
+
+        /* Retro theme (default) — using user palette: navy, teal, cream, peach, orange */
+        .theme-retro{
+            --bg: #F6DCAC;      /* cream background */
+            --text: #01204E;    /* deep navy for text */
+            --muted: #028391;   /* teal for muted accents */
+            --panel-bg: rgba(246,220,172,0.95);
+            --panel-border: rgba(1,32,78,0.06);
+            --accent: #028391;  /* teal */
+            --accent-2: #F85525; /* orange/red */
+            --accent-3: #FAA968; /* peach */
+            --nav-dark: #01204E; /* navy */
+            --cursor: #01204E;
+            --glow: rgba(2,131,145,0.12);
+            --loader-bg: #F6DCAC;
+            --quick-bg: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86));
+            --quick-fg: #01204E;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,8 +81,8 @@
         }
 
         body {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden;
             cursor: none;
@@ -32,7 +97,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: #0a0a0c;
+            background-color: var(--loader-bg);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -79,7 +144,7 @@
             font-weight: 700;
             letter-spacing: 0.1em;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #ffffff;
+            color: var(--text);
             pointer-events: none;
         }
 
@@ -89,15 +154,15 @@
             z-index: 200;
             font-size: 1.6em;
             cursor: pointer;
-            color: #ffffff;
+            color: var(--text);
             transition: color 0.3s ease, transform 0.3s ease;
             user-select: none;
             line-height: 1;
             width: 32px;
             text-align: center;
         }
-        .menu-icon:hover { color: #d4af37; }
-        .menu-icon.open { transform: rotate(90deg); color: #d4af37; }
+        .menu-icon:hover { color: var(--accent-2); }
+        .menu-icon.open { transform: rotate(90deg); color: var(--accent-2); }
 
         .status-left {
             position: fixed;
@@ -106,7 +171,7 @@
             font-size: 0.75em;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            color: #888888;
+            color: var(--muted);
             max-width: 200px;
             line-height: 1.5;
             font-family: 'JetBrains Mono', monospace;
@@ -121,13 +186,13 @@
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #ffffff;
+            color: var(--text);
             font-family: 'Plus Jakarta Sans', sans-serif;
             transition: color 0.3s ease;
             cursor: pointer;
             pointer-events: auto; /* Forces browser to handle click tracking */
         }
-        .status-right:hover { color: #d4af37; }
+        .status-right:hover { color: var(--accent-2); }
 
         /* ── NAV DRAWER ── */
         #nav-drawer {
@@ -135,8 +200,8 @@
             top: 0; right: 0;
             width: 320px;
             height: 100vh;
-            background: rgba(10, 10, 12, 0.97);
-            border-left: 1px solid #1f2937;
+            background: var(--panel-bg);
+            border-left: 1px solid var(--panel-border);
             z-index: 150;
             display: flex;
             flex-direction: column;
@@ -152,7 +217,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.65em;
             letter-spacing: 0.2em;
-            color: #444;
+            color: var(--muted);
             text-transform: uppercase;
             margin-bottom: 32px;
         }
@@ -166,22 +231,22 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 2em;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text);
             text-decoration: none;
             letter-spacing: 0.02em;
             transition: color 0.25s ease, letter-spacing 0.25s ease;
             cursor: pointer;
         }
         .nav-items li a:hover {
-            color: #d4af37;
+            color: var(--accent-2);
             letter-spacing: 0.06em;
         }
-        .nav-items li a.active { color: #60a5fa; }
+        .nav-items li a.active { color: var(--accent); }
 
         .nav-divider {
             width: 40px;
             height: 1px;
-            background: #1f2937;
+            background: var(--panel-border);
             margin: 36px 0;
         }
 
@@ -190,12 +255,12 @@
         .nav-links li a {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8em;
-            color: #888;
+            color: var(--muted);
             text-decoration: none;
             letter-spacing: 0.05em;
             transition: color 0.2s;
         }
-        .nav-links li a:hover { color: #fff; }
+        .nav-links li a:hover { color: var(--text); }
 
         /* ── OVERLAY BACKDROP ── */
         #drawer-backdrop {
@@ -214,8 +279,8 @@
             transform: translate(-50%, -50%) scale(0.92);
             width: min(700px, 90vw);
             max-height: 80vh;
-            background: rgba(8, 8, 10, 0.96);
-            border: 1px solid #1f2937;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
             z-index: 130;
             opacity: 0;
             pointer-events: none;
@@ -234,10 +299,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 28px 36px 24px;
-            border-bottom: 1px solid #1f2937;
+            border-bottom: 1px solid var(--panel-border);
             position: sticky;
             top: 0;
-            background: rgba(8, 8, 10, 0.98);
+            background: var(--panel-bg);
             z-index: 1;
         }
         .panel-header h2 {
@@ -245,7 +310,7 @@
             font-size: 0.75em;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #888;
+            color: var(--muted);
         }
         .panel-close {
             font-size: 1.2em;
@@ -256,7 +321,7 @@
             border: none;
             line-height: 1;
         }
-        .panel-close:hover { color: #fff; }
+        .panel-close:hover { color: var(--text); }
 
         .panel-body { padding: 36px; }
 
@@ -270,7 +335,7 @@
         .panel-pokepy .project-sub {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75em;
-            color: #60a5fa;
+            color: var(--accent);
             letter-spacing: 0.1em;
             margin-bottom: 28px;
         }
@@ -278,7 +343,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.88em;
             line-height: 1.8;
-            color: #ccc;
+            color: var(--muted);
             margin-bottom: 20px;
         }
         .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
@@ -287,8 +352,8 @@
             font-size: 0.7em;
             letter-spacing: 0.08em;
             padding: 4px 10px;
-            border: 1px solid #1f2937;
-            color: #888;
+            border: 1px solid var(--panel-border);
+            color: var(--muted);
         }
         .stat-row {
             display: grid;
@@ -298,14 +363,14 @@
         }
         .stat-box {
             padding: 20px;
-            border: 1px solid #1f2937;
+            border: 1px solid var(--panel-border);
             text-align: center;
         }
         .stat-box .stat-val {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1.6em;
             font-weight: 700;
-            color: #60a5fa;
+            color: var(--accent);
         }
         .stat-box .stat-label {
             font-family: 'JetBrains Mono', monospace;
@@ -352,7 +417,7 @@
         }
         .status-active { border: 1px solid #22c55e; color: #22c55e; }
         .status-planned { border: 1px solid #f59e0b; color: #f59e0b; }
-        .status-completed { border: 1px solid #60a5fa; color: #60a5fa; }
+        .status-completed { border: 1px solid var(--accent); color: var(--accent); }
 
         /* SYSTEMS panel */
         .panel-systems .sys-grid {
@@ -362,12 +427,12 @@
         }
         .sys-card {
             padding: 24px;
-            border: 1px solid #1f2937;
+            border: 1px solid var(--panel-border);
         }
         .sys-card h4 {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75em;
-            color: #60a5fa;
+            color: var(--accent);
             letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-bottom: 12px;
@@ -376,7 +441,7 @@
         .sys-card ul li {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8em;
-            color: #aaa;
+            color: var(--muted);
             padding: 4px 0;
             border-bottom: 1px solid #0f0f0f;
             display: flex;
@@ -385,7 +450,7 @@
         }
         .sys-card ul li::before {
             content: '▸';
-            color: #333;
+            color: var(--muted);
             font-size: 0.7em;
         }
         .progress-bar {
@@ -395,7 +460,7 @@
         }
         .progress-fill {
             height: 100%;
-            background: #60a5fa;
+            background: var(--accent);
             transition: width 0.8s ease;
         }
 
@@ -412,11 +477,11 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #60a5fa;
+            background: var(--accent);
             margin-top: 6px;
             flex-shrink: 0;
         }
-        .eng-dot.gold { background: #d4af37; }
+        .eng-dot.gold { background: var(--accent-2); }
         .eng-dot.green { background: #22c55e; }
         .eng-content h4 {
             font-size: 0.95em;
@@ -440,7 +505,7 @@
         .cursor-dot {
             position: fixed;
             width: 8px; height: 8px;
-            background: #d4af37;
+            background: var(--cursor);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
@@ -451,7 +516,7 @@
         .glow-ring {
             position: fixed;
             width: 40px; height: 40px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid var(--glow);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
@@ -463,7 +528,58 @@
         /* scrollbar */
         #asset-panel::-webkit-scrollbar { width: 4px; }
         #asset-panel::-webkit-scrollbar-track { background: transparent; }
-        #asset-panel::-webkit-scrollbar-thumb { background: #1f2937; }
+        #asset-panel::-webkit-scrollbar-thumb { background: var(--panel-border); }
+        /* bottom-left quick buttons (visible, icon-based) */
+        #theme-quick{
+            position: fixed;
+            left: 18px;
+            bottom: 18px;
+            z-index: 320;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .theme-quick-btn{
+            width: 52px; height: 52px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.06);
+            background: var(--quick-bg);
+            display: inline-flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 6px 20px rgba(12,12,14,0.08);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s, color 0.12s;
+            color: var(--quick-fg);
+        }
+        .theme-quick-btn svg{ width: 22px; height: 22px; display: block; }
+        /* controller PNG as mask to allow tinting via currentColor */
+        .theme-quick-btn .icon{
+            width: 22px; height: 22px; display: block;
+            background-color: currentColor;
+            -webkit-mask: url('assets/controller.png') center/contain no-repeat;
+            mask: url('assets/controller.png') center/contain no-repeat;
+        }
+        .theme-quick-btn:active{ transform: translateY(1px) scale(0.99); }
+        .theme-quick-btn.active{
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(0,0,0,0.12);
+        }
+        /* individual visual tweaks */
+        /* button back to normal size; icon scaled inside */
+        #theme-btn-retro{ background: linear-gradient(135deg, var(--accent-3), var(--accent-2)); color: #081826; width: 52px; height: 52px; border-radius: 12px; overflow: visible; }
+        #theme-btn-retro .icon{ width: 48px; height: 48px; background-size: contain; display: block; }
+        /* remove dark outline/border when selected; keep subtle scale feedback */
+        #theme-btn-retro.active{ color: #fff; transform: translateY(-2px) scale(1.06); box-shadow: none; border-color: transparent; outline: none; }
+        #theme-btn-retro:focus { outline: none; }
+        #theme-btn-retro:focus-visible { outline: none; }
+
+        /* dark-mode: force controller icon to white for contrast */
+        .theme-dark #theme-btn-retro { background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04)); }
+        .theme-dark #theme-btn-retro .icon { background-color: #ffffff; }
+        /* retro mode: when selected, use retro navy/blue as the selected color */
+        .theme-retro #theme-btn-retro.active { background: var(--nav-dark); color: #ffffff; }
+        .theme-retro #theme-btn-retro.active .icon { background-color: #ffffff; }
     </style>
 </head>
 <body>
@@ -480,7 +596,6 @@
 
     <div class="menu-icon" id="menuIcon">⋮</div>
 
-    <div class="status-left">ML Systems Engineer • High School</div>
     <div class="status-right" id="statusRight">POKEPY</div>
 
     <div class="cursor-dot"></div>
@@ -514,6 +629,40 @@
     </div>
 
     <div id="portfolio-content"></div>
+
+    <div id="theme-switcher" aria-label="Theme switcher">
+        <button id="theme-retro" title="Retro" aria-pressed="true" style="background:#e9d8a6">R</button>
+        <button id="theme-light" title="Light" aria-pressed="false" style="background:#f7f7f8">L</button>
+        <button id="theme-dark"  title="Dark"  aria-pressed="false" style="background:#0b0b0b;color:#fff">D</button>
+        <div class="label">Theme</div>
+    </div>
+
+        <!-- Bottom-left quick theme buttons -->
+        <div id="theme-quick" aria-hidden="false">
+            <button class="theme-quick-btn" id="theme-btn-light" data-theme="light" aria-label="Light theme" title="Light">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4" fill="currentColor" />
+                    <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                        <line x1="12" y1="2" x2="12" y2="4" />
+                        <line x1="12" y1="20" x2="12" y2="22" />
+                        <line x1="2" y1="12" x2="4" y2="12" />
+                        <line x1="20" y1="12" x2="22" y2="12" />
+                        <line x1="4.2" y1="4.2" x2="5.6" y2="5.6" />
+                        <line x1="18.4" y1="18.4" x2="19.8" y2="19.8" />
+                        <line x1="4.2" y1="19.8" x2="5.6" y2="18.4" />
+                        <line x1="18.4" y1="5.6" x2="19.8" y2="4.2" />
+                    </g>
+                </svg>
+            </button>
+            <button class="theme-quick-btn" id="theme-btn-dark"  data-theme="dark"  aria-label="Dark theme" title="Dark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor" />
+                </svg>
+            </button>
+            <button class="theme-quick-btn" id="theme-btn-retro" data-theme="retro" aria-label="Retro theme" title="Retro">
+                <span class="icon" aria-hidden="true"></span>
+            </button>
+        </div>
 
     <script src="main.js"></script>
 </body>

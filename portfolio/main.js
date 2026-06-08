@@ -80,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const proj = (p, rx, ry) => {
               const y1 = p.y*Math.cos(rx) - p.z*Math.sin(rx);
               const z1 = p.y*Math.sin(rx) + p.z*Math.cos(rx);
-              // FIXED: Changed raw x to p.x and raw -x to -p.x to match particle property definitions
               const x2 = p.x*Math.cos(ry) + z1*Math.sin(ry);
               const z2 = -p.x*Math.sin(ry) + z1*Math.cos(ry);
               const s3 = 500/(500+z2);
@@ -118,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function animate() {
       mouseX += (targetMouseX - mouseX) * 0.1;
       mouseY += (targetMouseY - mouseY) * 0.1;
-      ctx.fillStyle = '#000000';
+      const bgColor = getComputedStyle(document.body).getPropertyValue('--bg') || '#000000';
+      ctx.fillStyle = bgColor.trim();
       ctx.fillRect(0, 0, coreCanvas.width, coreCanvas.height);
       time += 0.01;
       rotationX += 0.003 + (mouseX - coreCanvas.width/2)*0.00001;
@@ -402,10 +402,19 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     p.draw = () => {
-      p.background(10, 10, 12);
+      const style = getComputedStyle(document.body);
+      const loaderBg = (style.getPropertyValue('--loader-bg') || '#000000').trim();
+      p.background(loaderBg);
       internalFrames++;
 
-      let cycle = Math.floor(internalFrames / 30) % 4; 
+      const palette = [
+        (style.getPropertyValue('--nav-dark') || '#01204E').trim(),
+        (style.getPropertyValue('--accent') || '#028391').trim(),
+        (style.getPropertyValue('--accent-3') || '#FAA968').trim(),
+        (style.getPropertyValue('--accent-2') || '#F85525').trim()
+      ];
+
+      let cycle = Math.floor(internalFrames / 30) % 4;
 
       for (let x = 0; x < p.width; x += sizeGrid) {
         for (let y = 0; y < p.height; y += sizeGrid) {
@@ -415,23 +424,24 @@ document.addEventListener("DOMContentLoaded", () => {
           let noiseVal = p.noise(x * 0.05, y * 0.05, internalFrames * 0.1);
           let radiusLimit = 120 + Math.sin(internalFrames * 0.1) * 20;
 
-          if (distance < radiusLimit && noiseVal > 0.3) {
+          if (distance < radiusLimit && noiseVal > 0.12) {
             p.push();
             p.translate(x + sizeGrid/2, y + sizeGrid/2);
 
+            const colorIndex = Math.floor(noiseVal * palette.length) % palette.length;
             if (cycle === 0) {
-              p.fill(200, 190, 195); p.noStroke(); p.rectMode(p.CENTER);
+              p.noStroke(); p.fill(palette[colorIndex]); p.rectMode(p.CENTER);
               p.rect(0, 0, sizeGrid - 2, sizeGrid - 2);
             } else if (cycle === 1) {
               let charIndex = Math.floor(noiseVal * chars.length) % chars.length;
-              p.fill(243, 244, 246); p.textSize(14); p.textFont('JetBrains Mono');
+              p.fill(palette[(colorIndex+1) % palette.length]); p.textSize(14); p.textFont('JetBrains Mono');
               p.text(chars[charIndex], 0, 0);
             } else if (cycle === 2) {
-              p.fill(255); p.noStroke();
+              p.noStroke(); p.fill(palette[(colorIndex+2) % palette.length]);
               let dotSize = p.map(distance, 0, radiusLimit, 12, 2);
               p.ellipse(0, 0, dotSize, dotSize);
             } else if (cycle === 3) {
-              p.fill(147, 51, 234, 150); p.stroke(243, 244, 246); p.strokeWeight(1);
+              p.stroke(palette[(colorIndex+3) % palette.length]); p.strokeWeight(1); p.noFill();
               p.line(-sizeGrid/2, 0, sizeGrid/2, 0);
             }
             p.pop();
@@ -456,4 +466,48 @@ document.addEventListener("DOMContentLoaded", () => {
   if (targetP5Engine) {
     new targetP5Engine(loaderSketch);
   }
+
+  // ── Theme switching (light, dark, retro) ─────────────────────────────────
+  function applyTheme(theme){
+    document.body.classList.remove('theme-retro','theme-dark','theme-light');
+    const cls = 'theme-' + theme;
+    document.body.classList.add(cls);
+    try{ localStorage.setItem('site-theme', theme); }catch(e){}
+    // update switcher UI
+    const buttons = { retro: document.getElementById('theme-retro'), light: document.getElementById('theme-light'), dark: document.getElementById('theme-dark') };
+    Object.keys(buttons).forEach(k=>{
+      const btn = buttons[k];
+      if(!btn) return;
+      const active = k === theme;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    // update any quick buttons (bottom-left) that use data-theme
+    const quick = document.querySelectorAll('[data-theme]');
+    quick.forEach(b => {
+      const active = b.dataset.theme === theme;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
+
+  // wire up UI
+  const btnRetro = document.getElementById('theme-retro');
+  const btnLight = document.getElementById('theme-light');
+  const btnDark  = document.getElementById('theme-dark');
+  if(btnRetro) btnRetro.addEventListener('click', ()=> applyTheme('retro'));
+  if(btnLight) btnLight.addEventListener('click', ()=> applyTheme('light'));
+  if(btnDark)  btnDark.addEventListener('click', ()=> applyTheme('dark'));
+
+  // quick bottom-left buttons
+  const qRetro = document.getElementById('theme-btn-retro');
+  const qLight = document.getElementById('theme-btn-light');
+  const qDark  = document.getElementById('theme-btn-dark');
+  if(qRetro) qRetro.addEventListener('click', ()=> applyTheme('retro'));
+  if(qLight) qLight.addEventListener('click', ()=> applyTheme('light'));
+  if(qDark)  qDark.addEventListener('click', ()=> applyTheme('dark'));
+
+  // initial: always use retro as the default on first load (ignore previous saved prefs)
+  try{ localStorage.setItem('site-theme', 'retro'); }catch(e){}
+  applyTheme('retro');
 });
