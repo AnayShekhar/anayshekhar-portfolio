@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #090d0f;
+  --color-bg-elevated: #0f1419;
+  --color-header: #f8fafc;
+  --color-body: #94a3b8;
+  --color-mono-tag: #64748b;
+  --color-border: #171717;
+  --color-accent: #64748b;
+  --color-highlight: #94a3b8;
+  --color-drawer-bg: #0f1419;
+  --color-drawer-text: #f8fafc;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --ease-stage: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    text-transform: lowercase;
+  }
+}
+
+@layer utilities {
+  .faint-grid {
+    background-image:
+      linear-gradient(to right, rgb(100 116 139 / 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(100 116 139 / 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .portfolio-layout-track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .loader-engine-canvas,
+  .hero-title-stage,
+  .intro-title-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    contain: none;
+    overflow: visible;
+  }
+
+  .glitch-character-node {
+    display: inline-block;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+
+  .hero-header-zone {
+    text-align: center;
+    width: 100%;
+  }
+
+  .subtext-array {
+    will-change: transform, opacity;
+  }
+}
