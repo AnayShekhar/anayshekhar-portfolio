@@ -1,84 +1,95 @@
 @import "tailwindcss";
 
+/*
+  ANAY — computational notebook
+  A restrained, paper-first system. Typography carries the experience.
+  canvas : warm cream paper (#F5F4F0)
+  ink    : deep system near-black (#001219)
+  signals: deep teal / teal (used as quiet structure)
+  human  : amber / burnt orange (used very sparingly)
+*/
+
 @theme {
-  --color-bg: #090d0f;
-  --color-bg-elevated: #0f1419;
-  --color-header: #f8fafc;
-  --color-body: #94a3b8;
-  --color-mono-tag: #64748b;
-  --color-border: #171717;
-  --color-accent: #64748b;
-  --color-highlight: #94a3b8;
-  --color-drawer-bg: #0f1419;
-  --color-drawer-text: #f8fafc;
+  /* ── Palette (per CLAUDE.md — no new colors) ── */
+  --color-bg:        #f5f4f0; /* canvas */
+  --color-machine:   #001219; /* deep system black */
+  --color-ink:       #001219; /* primary text */
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --color-teal-dark: #005f73; /* deep teal */
+  --color-teal:      #0a9396; /* teal */
+  --color-amber:     #ee9b00;
+  --color-burnt:     #ca6702;
 
-  --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  /* semantic content tokens */
+  --color-header:    #001219;                 /* titles / strong text */
+  --color-body:      rgba(0, 18, 25, 0.72);   /* paragraph text */
+  --color-mono-tag:  #005f73;                 /* monospace metadata labels */
+  --color-accent:    #ca6702;                 /* interaction / attention */
+  --color-border:    rgba(0, 18, 25, 0.12);   /* hairline rules */
+
+  /* ── Fonts (wired to next/font CSS vars in layout.tsx) ── */
+  --font-sans:  var(--font-inter), Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:  var(--font-plex-mono), "IBM Plex Mono", "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
   --ease-stage: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
-  html,
-  body {
+  html {
     height: 100%;
-    overflow: hidden;
+    scroll-behavior: smooth;
+    scrollbar-color: rgba(0, 95, 115, 0.28) transparent;
+    scrollbar-width: thin;
   }
 
   body {
+    min-height: 100%;
+    overflow-x: hidden;
     background-color: var(--color-bg);
-    color: var(--color-body);
+    color: var(--color-ink);
     font-family: var(--font-sans);
     text-transform: lowercase;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  a {
+    text-transform: lowercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 95, 115, 0.2);
+    border: 3px solid var(--color-bg);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0, 95, 115, 0.34); }
 }
 
 @layer utilities {
-  .faint-grid {
+  /* ── Faint notebook grid (graph-paper feel, ~4% teal) ── */
+  .notebook-grid {
     background-image:
-      linear-gradient(to right, rgb(100 116 139 / 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(100 116 139 / 0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
+      linear-gradient(to right,  rgba(0, 95, 115, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 95, 115, 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
   }
 
-  .portfolio-layout-track {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
+  /* ── Menu pill label ── */
+  .menu-pill {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
   }
 
-  .loader-engine-canvas,
-  .hero-title-stage,
-  .intro-title-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    contain: none;
-    overflow: visible;
-  }
-
-  .glitch-character-node {
-    display: inline-block;
-    will-change: transform, opacity;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-  }
-
-  .hero-header-zone {
-    text-align: center;
-    width: 100%;
-  }
-
-  .subtext-array {
-    will-change: transform, opacity;
-  }
+  /* keep long-form prose to an editorial measure */
+  .measure { max-width: 60ch; }
 }

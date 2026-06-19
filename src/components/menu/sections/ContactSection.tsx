@@ -19,6 +19,7 @@ export function ContactSection() {
           </li>
         ))}
       </ul>
+      <p className="font-mono text-xs text-mono-tag">{CONTACT_CONTENT.note}</p>
     </div>
   );
 }

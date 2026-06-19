@@ -1,66 +1,16 @@
-export type LoaderPhase =
-  | "identity"
-  | "awareness"
-  | "decompose"
-  | "latent"
-  | "complete";
-
-export const LOADER_TIMING = {
-  identityStart: 0,
-  awarenessStart: 1800,
-  decomposeStart: 2800,
-  latentStart: 4200,
-  systemMessageStart: 6000,
-  awaitingMessageStart: 6800,
-  fadeOutStart: 7200,
-  complete: 7500,
-  settlementDelay: 6500,
-} as const;
-
-export const TYPEWRITER_DELAYS = {
-  fast: 45,
-  pauseAfterComma: 220,
-  slow: 95,
-} as const;
-
-export const CURSOR_BLINK_MS = 530;
-
-export const cinematicSettlementCurve = {
-  type: "spring" as const,
-  stiffness: 75,
-  damping: 24,
-  mass: 1.6,
-};
-
-export const cinematicSettlementPhysics = cinematicSettlementCurve;
-
-export const textStabilizeSpring = cinematicSettlementCurve;
-
-export const loaderStabilizeSpring = cinematicSettlementCurve;
+// Shared motion curves. The cinematic loader was removed (CLAUDE.md §"remove
+// the loader" — max 800ms introduction); only these restrained curves remain,
+// used by the menu and the first-paint reveal.
 
 export const uiRevealTransition = {
-  duration: 0.4,
-  ease: [0, 0, 0.2, 1] as const,
-};
-
-export const stagePanelTransition = {
-  duration: 0.45,
+  duration: 0.7,
   ease: [0.16, 1, 0.3, 1] as const,
-};
+} as const;
 
-export const floatTransition = {
-  duration: 1.35,
-  ease: [0.22, 1, 0.36, 1] as const,
-};
-
-export const latentTransition = {
-  duration: 2.8,
-  ease: [0.22, 1, 0.36, 1] as const,
-};
-
+// gentle, no overshoot — interactions should feel precise, not bouncy
 export const panelSpring = {
   type: "spring" as const,
-  stiffness: 300,
-  damping: 32,
+  stiffness: 260,
+  damping: 30,
   mass: 0.8,
-};
+} as const;
