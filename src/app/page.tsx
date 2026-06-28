@@ -1,30 +1,8 @@
-"use client";
+import MacExperience from "@/components/mac/MacExperience";
 
-import { useCallback } from "react";
-import { MainStage } from "@/components/main/MainStage";
-import type { MenuSection } from "@/lib/content";
-
-function getReducedMotion() {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
+// The whole site lives inside the Macintosh: the bezel, the CRT glass, and the
+// portfolio document painted directly onto the curved screen mesh. There is no
+// HTML overlay — content wraps with the tube. See MacExperience + screenContent.
 export default function Home() {
-  // No loader: the first screen appears immediately (CLAUDE.md §"remove the
-  // loader"). The menu highlight simply follows the chapter you scroll into.
-
-  const scrollToSection = useCallback((section: MenuSection) => {
-    const el = document.getElementById(section);
-    if (!el) return;
-    el.scrollIntoView({
-      behavior: getReducedMotion() ? "auto" : "smooth",
-      block: "start",
-    });
-  }, []);
-
-  return (
-    <main className="relative w-full">
-      <MainStage onSectionSelect={scrollToSection} />
-    </main>
-  );
+  return <MacExperience />;
 }

@@ -68,10 +68,9 @@ export function HeroHeadline({ title, reduced, onDone }: HeroHeadlineProps) {
 
   return (
     <h1
-      className="relative z-10 font-sans font-medium"
+      className="t-hero relative z-10 font-sans font-normal"
       style={{
         color: "var(--color-header)",
-        fontSize: "clamp(2.75rem, 9vw, 7rem)",
         letterSpacing: "-0.03em",
         lineHeight: 1.02,
       }}

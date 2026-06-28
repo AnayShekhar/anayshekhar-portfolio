@@ -46,7 +46,8 @@
 
   body {
     min-height: 100%;
-    overflow-x: hidden;
+    /* the Mac bezel never moves — only the screen's content scrolls (FIX 6) */
+    overflow: hidden;
     background-color: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -92,4 +93,47 @@
 
   /* keep long-form prose to an editorial measure */
   .measure { max-width: 60ch; }
+
+  /* the in-screen scroll container scrolls but shows no scrollbar (FIX 6) */
+  .mac-scroll::-webkit-scrollbar { display: none; }
+  .mac-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* ────────────────────────────────────────────────────────────────
+     CONTENT LAYER utilities. Typography scale is keyed to the live screen
+     container width (--sw, set every frame by MacExperience). Everything
+     below is transform / opacity / colour only — no layout-triggering work.
+     ──────────────────────────────────────────────────────────────── */
+
+  /* type scale relative to the screen container width */
+  .t-hero  { font-size: calc(var(--sw, 100vw) * 0.075); }
+  .t-title { font-size: calc(var(--sw, 100vw) * 0.048); }
+  .t-name  { font-size: calc(var(--sw, 100vw) * 0.032); }
+  .t-body  { font-size: calc(var(--sw, 100vw) * 0.018); }
+  .t-mono  { font-size: calc(var(--sw, 100vw) * 0.013); }
+
+  /* old-system separator: 1px rule, 3px dash / 3px gap. Colour via --dash. */
+  .pixel-divider {
+    height: 1px;
+    width: 100%;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--dash, rgba(148, 210, 189, 0.6)) 0,
+      var(--dash, rgba(148, 210, 189, 0.6)) 3px,
+      transparent 3px,
+      transparent 6px
+    );
+  }
+
+  /* retro outline button (hero SCROLL) — fills on hover, no layout shift */
+  .retro-btn {
+    border: 1px solid var(--color-teal-dark);
+    color: var(--color-teal-dark);
+    background: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .retro-btn:hover { background: var(--color-teal-dark); color: var(--color-bg); }
+
+  /* data-field value — shifts to burnt orange on hover */
+  .contact-value { color: var(--color-header); transition: color 0.15s ease; }
+  .contact-value:hover { color: var(--color-burnt); }
 }
