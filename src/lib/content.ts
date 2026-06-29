@@ -84,6 +84,11 @@ export const CONTACT_CONTENT = {
       value: "linkedin.com/in/AnayShekhar",
       href: "https://linkedin.com/in/AnayShekhar",
     },
+    {
+      label: "instagram",
+      value: "@aiwithanay",
+      href: "https://www.instagram.com/aiwithanay/",
+    },
   ],
 };
 

@@ -72,8 +72,24 @@ export function MainStage({ onSectionSelect }: MainStageProps) {
   const reduced = !!useReducedMotion();
   const [view, setView] = useState<StageView>("hero");
   const [introDone, setIntroDone] = useState(false);
+  // On phones, a page-wide CSS filter forces a full-document repaint on every
+  // scroll frame. Drop it there (the 2% contrast / 1% brightness shift is
+  // imperceptible); keep the perspective tilt — that's a cheap compositor
+  // transform, so the geometry is unchanged.
+  const [lite, setLite] = useState(false);
   const viewRef = useRef<StageView>("hero");
   const anchorRef = useRef<BlobAnchor>({ x: 0, y: 0, radius: 160, strength: 0 });
+
+  useEffect(() => {
+    const measure = () =>
+      setLite(
+        window.innerWidth <= 768 ||
+          window.matchMedia?.("(pointer: coarse)").matches === true,
+      );
+    measure();
+    window.addEventListener("resize", measure, { passive: true });
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const handleIntroDone = useCallback(() => setIntroDone(true), []);
   const handleAnchorUpdate = useCallback((anchor: BlobAnchor) => {
@@ -190,7 +206,7 @@ export function MainStage({ onSectionSelect }: MainStageProps) {
         <div
           style={{
             transform: "perspective(1200px) rotateX(1.8deg)",
-            filter: "contrast(1.02) brightness(0.99)",
+            filter: lite ? undefined : "contrast(1.02) brightness(0.99)",
             height: "100%",
           }}
         >

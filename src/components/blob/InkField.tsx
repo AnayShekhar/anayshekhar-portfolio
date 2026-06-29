@@ -144,6 +144,7 @@ export default function InkField({ onAnchorUpdate }: InkFieldProps) {
     let lastScrollY = window.scrollY;
     let lastT = performance.now();
     let raf = 0;
+    let wasVisible = true; // track so we clear exactly once when it leaves view
 
     // ── triggers ──
     const trigger = (now: number) => {
@@ -228,6 +229,22 @@ export default function InkField({ onAnchorUpdate }: InkFieldProps) {
         p.x += p.vx * dt;
         p.y += p.vy * dt;
       }
+
+      // Skip the offscreen render + composite entirely when the mass has
+      // scrolled fully out of view — the output would be blank anyway. Physics
+      // above keep integrating so re-entry is seamless. Clear once on the way out.
+      const visible = blobY + size / 2 > 0 && blobY - size / 2 < H;
+      if (!visible) {
+        if (wasVisible) {
+          ctx.clearRect(0, 0, W, H);
+          wasVisible = false;
+        }
+        if (onAnchorUpdate) {
+          onAnchorUpdate({ x: blobX, y: blobY, radius: blobR, strength: 0 });
+        }
+        return;
+      }
+      wasVisible = true;
 
       // ── render the metaball field to the offscreen buffer ──
       // Overlapping soft radial gradients in one colour stack into a single
