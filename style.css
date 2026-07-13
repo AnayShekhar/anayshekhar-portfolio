@@ -1,10 +1,10 @@
 :root {
   color-scheme: light;
-  --bg: #fdfdfc;
-  --text: #1a1a1a;
-  --muted: #555555;
-  --link: #1a4b8c;
-  --rule: #dddddd;
+  --bg: #fdfcf9;
+  --text: #201d19;
+  --muted: #6b6255;
+  --link: #a6501f;
+  --rule: #e6ddd0;
 }
 
 * {
@@ -37,11 +37,11 @@ header {
 
 .avatar {
   display: block;
-  width: 72px;
-  height: 72px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 h1 {
@@ -92,6 +92,10 @@ ul:last-child {
 
 li {
   margin-bottom: 8px;
+}
+
+li::marker {
+  color: var(--link);
 }
 
 li:last-child {
