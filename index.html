@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>anay shekhar</title>
+  <meta name="description" content="anay shekhar — world models and interpretability.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="assets/photo.jpg" alt="Anay Shekhar" class="avatar" width="72" height="72">
+      <h1>Anay Shekhar</h1>
+      <p class="identity">world models &amp; interpretability</p>
+    </header>
+
+    <section aria-label="about">
+      <p>i'm someone who just wants to know what's actually happening underneath the model, not just that it works. that curiosity is what pulled me into machine learning in the first place, and it's why i build things from scratch instead of importing them. if i can't explain why a gradient flows the way it does or why a representation looks the way it does, i don't feel like i understand it yet.</p>
+      <p>right now that curiosity is pointed at world models and interpretability, specifically how models learn to represent physical reality instead of just predicting text, and what's actually going on inside them when they do.</p>
+
+      <p>currently exploring:</p>
+      <ul>
+        <li>joint embedding predictive architectures (jepa)</li>
+        <li>latent space prediction vs pixel reconstruction</li>
+        <li>probing what these models represent internally</li>
+      </ul>
+    </section>
+
+    <section aria-label="projects">
+      <h2>projects</h2>
+
+      <p><strong>fern.ai</strong><br>
+      built a mobile app that acts as an ai powered hospital bill auditor, which won best mobile hack at hacktj. the system let you take a photo or pdf upload of a bill, extracts the medical codes and pricing, validates them against a cms database using rag, flags any incorrect or fraudulent charges, and then writes up a formal dispute letter.</p>
+
+      <p><strong>pokepy</strong><br>
+      wrote a language model from scratch that generates names based on pokémon data. i built the underlying math entirely using numpy so i could get a deep understanding of weight initialization, activation stability, and how gradients flow through a network without relying on deep learning frameworks.</p>
+    </section>
+
+    <section aria-label="future">
+      <h2>future</h2>
+      <p>looking ahead, i want to keep asking whether models build real internal representations of the world, or just get good at faking it. i'd rather spend time figuring out what's actually happening inside a system than chase whatever's trending.</p>
+
+      <ul>
+        <li><strong>representation learning</strong> — building a small jepa style model from scratch to see how a context encoder and a target encoder learn to predict masked regions in latent space.</li>
+        <li><strong>mechanistic interpretability</strong> — writing probes to check what a model's latent space actually encodes, like whether it captures object permanence or spatial structure, instead of assuming it does.</li>
+        <li><strong>evaluation</strong> — digging into where current world models fail on physical reasoning benchmarks, and what that failure actually reveals about the gap between representation and understanding.</li>
+      </ul>
+    </section>
+
+    <section aria-label="contact">
+      <h2>contact</h2>
+      <p>if you're curious about the same things, world models, interpretability, what's actually going on inside these systems, feel free to reach out.</p>
+
+      <p>
+        email: <a href="mailto:anay.shekhar10@gmail.com">anay.shekhar10@gmail.com</a><br>
+        github: <a href="https://github.com/AnayShekhar">github.com/AnayShekhar</a><br>
+        linkedin: <a href="https://linkedin.com/in/AnayShekhar">linkedin.com/in/AnayShekhar</a>
+      </p>
+    </section>
+
+    <footer>
+      <p>usually respond within a couple of days.</p>
+    </footer>
+  </main>
+</body>
+</html>
