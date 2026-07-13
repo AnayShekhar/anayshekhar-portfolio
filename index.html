@@ -1,68 +1,242 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>anay shekhar</title>
-  <meta name="description" content="anay shekhar — world models and interpretability.">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anay Shekhar</title>
+<style>
+  :root {
+    --bg: #FBF7EF;
+    --text: #2B2420;
+    --text-muted: #6B6053;
+    --line: #E3D9C6;
+    --accent: #B5533C;
+    --accent-2: #6B7A4F;
+    --accent-3: #C99A3E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 3.5rem 1.5rem 5rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 0.35rem;
+  }
+
+  .tagline {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 1.02rem;
+    margin: 0 0 0.9rem;
+  }
+
+  .socials {
+    display: flex;
+    gap: 10px;
+  }
+
+  .social-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .social-icon:hover { opacity: 0.8; }
+
+  .social-icon svg {
+    width: 17px;
+    height: 17px;
+    fill: var(--bg);
+  }
+
+  .social-icon.a1 { background: var(--accent); }
+  .social-icon.a2 { background: var(--accent-2); }
+  .social-icon.a3 { background: var(--accent-3); }
+  .social-icon.a4 { background: var(--text); }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0 0 2.25rem;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 110px 1px 1fr;
+    gap: 0 1.5rem;
+    position: relative;
+  }
+
+  .row-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding-top: 0.15rem;
+    text-align: right;
+  }
+
+  .row-line {
+    position: relative;
+    border-left: 1px dashed var(--accent);
+  }
+
+  .row-line::before {
+    content: '';
+    position: absolute;
+    top: 0.15rem;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    transform: rotate(45deg);
+  }
+
+  .row:nth-of-type(3n+2) .row-line { border-left-color: var(--accent-2); }
+  .row:nth-of-type(3n+2) .row-line::before { background: var(--accent-2); }
+
+  .row:nth-of-type(3n+3) .row-line { border-left-color: var(--accent-3); }
+  .row:nth-of-type(3n+3) .row-line::before { background: var(--accent-3); }
+
+  .row-content {
+    padding-bottom: 2.25rem;
+  }
+
+  .row:last-of-type .row-content { padding-bottom: 0; }
+
+  p { margin: 0 0 0.9rem; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); }
+
+  ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+  li { margin-bottom: 0.55rem; }
+  li:last-child { margin-bottom: 0; }
+  li::marker { color: var(--accent-2); }
+
+  .entry { margin-bottom: 1rem; }
+  .entry:last-child { margin-bottom: 0; }
+  .entry-title { font-weight: 600; }
+  .entry-desc { color: var(--text-muted); font-size: 0.95rem; }
+
+  footer {
+    margin-top: 2.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding-left: calc(110px + 1.5rem);
+  }
+</style>
 </head>
 <body>
-  <main>
-    <header>
-      <img src="assets/photo.jpg" alt="Anay Shekhar" class="avatar" width="100" height="100">
-      <h1>Anay Shekhar</h1>
-      <p class="identity">world models &amp; interpretability</p>
-    </header>
+<div class="container">
 
-    <section aria-label="about">
-      <h2>about</h2>
+  <div class="header">
+    <img class="photo" src="assets/photo.jpg" alt="Anay Shekhar">
+    <div>
+      <h1>Anay Shekhar</h1>
+      <p class="tagline">15 y/o learning ML</p>
+      <div class="socials">
+        <a class="social-icon a4" href="https://github.com/AnayShekhar" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.4 0 12.06c0 5.31 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.24-.02-2.25-3.34.73-4.04-1.42-4.04-1.42-.55-1.4-1.34-1.77-1.34-1.77-1.09-.75.08-.74.08-.74 1.2.09 1.84 1.24 1.84 1.24 1.07 1.85 2.81 1.31 3.5 1.01.11-.78.42-1.31.76-1.61-2.66-.31-5.47-1.34-5.47-5.96 0-1.32.46-2.39 1.23-3.24-.12-.31-.53-1.55.12-3.23 0 0 1-.32 3.3 1.24a11.3 11.3 0 016 0c2.29-1.56 3.29-1.24 3.29-1.24.66 1.68.25 2.92.12 3.23.77.85 1.23 1.92 1.23 3.24 0 4.63-2.81 5.65-5.49 5.95.43.38.81 1.12.81 2.27 0 1.64-.02 2.96-.02 3.36 0 .32.22.7.83.58C20.57 21.85 24 17.36 24 12.06 24 5.4 18.63 0 12 0z"/></svg>
+        </a>
+        <a class="social-icon a1" href="https://linkedin.com/in/AnayShekhar" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+        </a>
+        <a class="social-icon a3" href="https://www.instagram.com/aiwithanay/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.22.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.05.41 2.22.06 1.27.07 1.64.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.22-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.05.36-2.22.41-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.22-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.05-.41-2.22-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.36 2.22-.41 1.27-.06 1.64-.07 4.85-.07zm0 5.62a4.22 4.22 0 100 8.44 4.22 4.22 0 000-8.44zm0 6.96a2.74 2.74 0 110-5.48 2.74 2.74 0 010 5.48zm5.38-7.13a.99.99 0 11-1.98 0 .99.99 0 011.98 0z"/></svg>
+        </a>
+        <a class="social-icon a2" href="mailto:anay.shekhar10@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24"><path d="M2 5.5A1.5 1.5 0 013.5 4h17A1.5 1.5 0 0122 5.5v13a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 012 18.5v-13zm2.2.2 7.3 5.4a.8.8 0 00.9 0l7.3-5.4H4.2zM20 7.3l-6.8 5.05a2.3 2.3 0 01-2.4 0L4 7.3v11.2h16V7.3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="row-label">about</div>
+    <div class="row-line"></div>
+    <div class="row-content">
       <p>i'm someone who just wants to know what's actually happening underneath the model, not just that it works. that curiosity is what pulled me into machine learning in the first place, and it's why i build things from scratch instead of importing them. if i can't explain why a gradient flows the way it does or why a representation looks the way it does, i don't feel like i understand it yet.</p>
       <p>right now that curiosity is pointed at world models and interpretability, specifically how models learn to represent physical reality instead of just predicting text, and what's actually going on inside them when they do.</p>
+    </div>
+  </div>
 
-      <p>currently exploring:</p>
+  <div class="row">
+    <div class="row-label">now</div>
+    <div class="row-line"></div>
+    <div class="row-content">
       <ul>
         <li>joint embedding predictive architectures (jepa)</li>
         <li>latent space prediction vs pixel reconstruction</li>
         <li>probing what these models represent internally</li>
       </ul>
-    </section>
+    </div>
+  </div>
 
-    <section aria-label="projects">
-      <h2>projects</h2>
+  <div class="row">
+    <div class="row-label">projects</div>
+    <div class="row-line"></div>
+    <div class="row-content">
+      <div class="entry">
+        <div class="entry-title"><a href="https://github.com/AnayShekhar/hacktjwinner" target="_blank" rel="noopener">fern.ai</a></div>
+        <div class="entry-desc">an ai powered hospital bill auditor, best mobile hack at hacktj. photo/pdf upload, extracts medical codes and pricing, validates against a cms database via rag, flags fraudulent charges, and drafts a formal dispute letter.</div>
+      </div>
+      <div class="entry">
+        <div class="entry-title"><a href="https://github.com/AnayShekhar/pokepy" target="_blank" rel="noopener">pokepy</a></div>
+        <div class="entry-desc">a language model built entirely from scratch in numpy that generates pokémon names. no frameworks, manual forward and backward passes, built to understand weight initialization, activation stability, and gradient flow directly.</div>
+      </div>
+    </div>
+  </div>
 
-      <p><strong>fern.ai</strong><br>
-      built a mobile app that acts as an ai powered hospital bill auditor, which won best mobile hack at hacktj. the system let you take a photo or pdf upload of a bill, extracts the medical codes and pricing, validates them against a cms database using rag, flags any incorrect or fraudulent charges, and then writes up a formal dispute letter.</p>
-
-      <p><strong>pokepy</strong><br>
-      wrote a language model from scratch that generates names based on pokémon data. i built the underlying math entirely using numpy so i could get a deep understanding of weight initialization, activation stability, and how gradients flow through a network without relying on deep learning frameworks.</p>
-    </section>
-
-    <section aria-label="future">
-      <h2>future</h2>
+  <div class="row">
+    <div class="row-label">future</div>
+    <div class="row-line"></div>
+    <div class="row-content">
       <p>looking ahead, i want to keep asking whether models build real internal representations of the world, or just get good at faking it. i'd rather spend time figuring out what's actually happening inside a system than chase whatever's trending.</p>
-
       <ul>
-        <li><strong>representation learning</strong> — building a small jepa style model from scratch to see how a context encoder and a target encoder learn to predict masked regions in latent space.</li>
-        <li><strong>mechanistic interpretability</strong> — writing probes to check what a model's latent space actually encodes, like whether it captures object permanence or spatial structure, instead of assuming it does.</li>
-        <li><strong>evaluation</strong> — digging into where current world models fail on physical reasoning benchmarks, and what that failure actually reveals about the gap between representation and understanding.</li>
+        <li>representation learning: building a small jepa style model from scratch to see how a context encoder and a target encoder learn to predict masked regions in latent space</li>
+        <li>mechanistic interpretability: writing probes to check what a model's latent space actually encodes, like object permanence or spatial structure, instead of assuming it does</li>
+        <li>evaluation: studying where current world models fail on physical reasoning benchmarks, and what that reveals about the gap between representation and understanding</li>
       </ul>
-    </section>
+    </div>
+  </div>
 
-    <section aria-label="contact">
-      <h2>contact</h2>
-      <p>if you're curious about the same things, world models, interpretability, what's actually going on inside these systems, feel free to reach out.</p>
+  <footer>i usually respond within a couple of days.</footer>
 
-      <p>
-        email: <a href="mailto:anay.shekhar10@gmail.com">anay.shekhar10@gmail.com</a><br>
-        code: <a href="https://github.com/AnayShekhar">github.com/AnayShekhar</a><br>
-        network: <a href="https://linkedin.com/in/AnayShekhar">linkedin.com/in/AnayShekhar</a>
-      </p>
-    </section>
-
-    <footer>
-      <p>i usually respond within a couple of days.</p>
-    </footer>
-  </main>
+</div>
 </body>
 </html>
