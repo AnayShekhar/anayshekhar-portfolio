@@ -1,19 +1,17 @@
 # anay shekhar
 
-A minimal, static personal site. Plain HTML and CSS — no framework, no build
-step, no JavaScript.
+A simple personal site. Plain HTML and CSS — no framework, build step, or JavaScript.
 
 ## running it
 
-Just open `index.html` in a browser, or serve the folder with anything static:
+Open `index.html` in a browser, or serve the folder:
 
 ```
-python3 -m http.server
+python3 -m http.server 8000
 ```
 
 ## files
 
-- `index.html` — all content, semantic markup
-- `style.css` — all styling
-
-That's the whole site.
+- `index.html` — content and semantic markup
+- `style.css` — styling and mobile layout
+- `assets/` — portrait and favicon
