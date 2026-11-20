@@ -1,17 +1,22 @@
-# anay shekhar
+# Anay Shekhar
 
-A simple personal site. Plain HTML and CSS — no framework, build step, or JavaScript.
+A minimal, responsive personal portfolio built with HTML, CSS, and GSAP. The original biography, interests, project descriptions, awards, and social destinations are preserved.
 
-## running it
+## Preview
 
-Open `index.html` in a browser, or serve the folder:
-
-```
-python3 -m http.server 8000
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-## files
+Open http://127.0.0.1:8000. There is no build step or package installation. Deploy the repository as a static site.
 
-- `index.html` — content and semantic markup
-- `style.css` — styling and mobile layout
-- `assets/` — portrait and favicon
+## Motion and assets
+
+- `script.js`: GSAP entrance animations, scroll reveals, and a reversible, coarse pixel wipe with a narrow edge and cutout cells from the hero to the about section. Native wheel and trackpad scrolling are preserved.
+- `assets/vendor/ascii-overlay.js`: the supplied Annnimate WebGL overlay, adapted to show the supplied mountain photograph, pause offscreen, and retain a photograph fallback if WebGL is unavailable.
+- `assets/vendor/dual-scramble.js`: the supplied Annnimate two-phase text scramble, also triggered by keyboard focus on links.
+- GSAP 3.14.2, ScrollTrigger, ScrambleTextPlugin, and Three.js r128 are served locally. Library license headers are retained.
+- DM Sans and IBM Plex Mono fonts are served locally. Font licenses are in `assets/fonts/`.
+- `assets/mountain.avif` is the user-supplied hero photograph. Project symbols are unboxed ASCII illustrations: an orbiting planet, clicking pointer, leaf, and neural network. `ascii-symbols.js` draws the characters, with static HTML fallbacks and visibility-aware animation at 12 fps.
+
+The pinned wipe runs on screens wider than 700px and at least 660px high. Smaller screens use a natural stacked layout. Reduced-motion preferences disable animated entrances, scrambling, and the ASCII animation; all content remains accessible with JavaScript disabled.
