@@ -868,11 +868,18 @@ h1 {
   border:0;
   user-select:none;
 }
+.ascii-orbit,.ascii-cursor,.ascii-leaf {
+  font-weight:700;
+  -webkit-text-stroke:0.2px currentColor;
+}
+.ascii-orbit {
+  color:#193b92;
+}
 .ascii-cursor {
-  color:#4776ba;
+  color:#234575;
 }
 .ascii-leaf {
-  color:#446aa7;
+  color:#223e6b;
   font-size:clamp(6px,0.62vw,10px);
 }
 .ascii-network {
