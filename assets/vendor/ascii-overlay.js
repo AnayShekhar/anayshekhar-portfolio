@@ -325,6 +325,7 @@
     // glyphs collapse into unreadable noise.
     const cellSizeCss    = Math.max(4, parseFloat(container.dataset.anmCellSize ?? '8'));
     const scrollEnabled  = (container.dataset.anmScroll ?? 'true') !== 'false';
+    const fullCoverage   = container.dataset.anmCoverage === 'full';
     const glyphs          = parseGlyphs(container);
     const threshLow       = parseFloat(container.dataset.anmThreshLow     ?? '0.32');
     const threshHigh      = parseFloat(container.dataset.anmThreshHigh    ?? '0.7');
@@ -619,6 +620,14 @@
           }
           console.log('[ascii-overlay] SUPPLIED mask active ' + cols + 'x' + rows + ' (@ bg | . subject)\n' + lines.join('\n'));
         }
+        return;
+      }
+
+      // Landscapes need characters on the terrain as well as the sky.
+      // Skip subject detection in this opt-in mode; retain the image's
+      // luminance range so glyph contrast still follows the photograph.
+      if (fullCoverage) {
+        uploadMask(new Uint8Array(n).fill(1), cols, rows, buf);
         return;
       }
 

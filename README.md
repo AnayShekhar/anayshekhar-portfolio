@@ -13,7 +13,7 @@ Open http://127.0.0.1:8000. There is no build step or package installation. Depl
 ## Motion and assets
 
 - `script.js`: GSAP entrance animations, scroll reveals, and a reversible, coarse pixel wipe with a narrow edge and cutout cells from the hero to the about section. Native wheel and trackpad scrolling are preserved.
-- `assets/vendor/ascii-overlay.js`: the supplied Annnimate WebGL overlay, adapted to show the supplied mountain photograph, pause offscreen, and retain a photograph fallback if WebGL is unavailable.
+- `assets/vendor/ascii-overlay.js`: the supplied Annnimate WebGL overlay, adapted to show the supplied mountain photograph, pause offscreen, and retain a photograph fallback if WebGL is unavailable. The hero uses `data-anm-coverage="full"` to place a dense, tone-aware character field across the terrain and sky instead of masking out the mountain as a foreground subject.
 - `assets/vendor/dual-scramble.js`: the supplied Annnimate two-phase text scramble, also triggered by keyboard focus on links.
 - GSAP 3.14.2, ScrollTrigger, ScrambleTextPlugin, and Three.js r128 are served locally. Library license headers are retained.
 - DM Sans and IBM Plex Mono fonts are served locally. Font licenses are in `assets/fonts/`.
