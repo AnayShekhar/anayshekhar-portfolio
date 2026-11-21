@@ -31,8 +31,8 @@
   --muted:#646b79;
   --line:#d9dde4;
   --gutter:clamp(24px,4.2vw,80px);
-  --mono:'IBM Plex Mono',monospace;
-  --sans:'DM Sans',Arial,sans-serif;
+  --mono:ui-monospace,Consolas,monospace;
+  --sans:Arial,Helvetica,sans-serif;
   color-scheme:light;
 }
 
@@ -215,7 +215,19 @@ a:hover {
 }
 
 .hero-fallback {
-  object-position:center 22%;
+  background-size:cover;
+  background-position:center 22%;
+}
+
+/* Only desktop visitors download the photograph and custom fonts. */
+@media (min-width:701px) and (pointer:fine) {
+  html:not(.lite-mode) {
+    --mono:'IBM Plex Mono',monospace;
+    --sans:'DM Sans',Arial,sans-serif;
+  }
+  html:not(.lite-mode) .hero-fallback {
+    background-image:url('assets/mountain.avif');
+  }
 }
 
 .asov_container {
@@ -842,16 +854,56 @@ h1 {
 
 }
 
-@media(prefers-reduced-motion:reduce) {
+@media(max-width:700px), (pointer:coarse), (prefers-reduced-motion:reduce) {
   *,*:before,*:after {
     animation:none!important;
     transition:none!important;
     scroll-behavior:auto!important;
   }
-  .asov_container {
+  .hero-art {
     display:none;
   }
+  .hero {
+    height:auto;
+    min-height:0;
+    max-height:none;
+  }
+  .hero-copy {
+    padding-top:150px;
+    padding-bottom:80px;
+  }
+}
 
+@media(max-width:360px) {
+  .site-header {
+    gap:12px;
+  }
+  .site-header .wordmark {
+    gap:8px;
+    font-size:13px;
+    white-space:nowrap;
+  }
+  .site-header nav {
+    gap:12px;
+  }
+}
+
+html.lite-mode *,html.lite-mode *::before,html.lite-mode *::after {
+  animation:none!important;
+  transition:none!important;
+  scroll-behavior:auto!important;
+}
+html.lite-mode .hero-art {
+  display:none;
+}
+html.lite-mode .hero {
+  height:auto;
+  min-height:0;
+  max-height:none;
+}
+html.lite-mode .hero-copy {
+  padding-top:150px;
+  padding-bottom:80px;
 }
 
 /* Transparent, character-only project symbols; each keeps its own silhouette. */

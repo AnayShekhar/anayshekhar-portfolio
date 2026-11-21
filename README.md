@@ -20,3 +20,9 @@ Open http://127.0.0.1:8000. There is no build step or package installation. Depl
 - `assets/mountain.avif` is the user-supplied hero photograph. Project symbols are unboxed ASCII illustrations: an orbiting planet, clicking pointer, leaf, and neural network. `ascii-symbols.js` draws the characters, with static HTML fallbacks and visibility-aware animation at 12 fps.
 
 The pinned wipe runs on screens wider than 700px and at least 660px high. Smaller screens use a natural stacked layout. Reduced-motion preferences disable animated entrances, scrambling, and the ASCII animation; all content remains accessible with JavaScript disabled.
+
+## Mobile performance
+
+Phones (including landscape touch screens), viewports up to 700px, reduced-motion preferences, and connections reporting Save-Data or 2G use a lightweight static page. `motion-loader.js` skips all animation dependencies in this mode. System fonts and a text-only hero avoid custom font and photograph downloads; project artwork uses the static ASCII already in the HTML. Navigation uses native anchor links and no smooth scrolling. Google Analytics remains enabled.
+
+Desktop visitors with a fine pointer keep the animated design. The loader downloads scripts in parallel and executes them in dependency order. If JavaScript is disabled, the content and navigation remain usable, with no mobile font or photograph downloads.
